@@ -159,6 +159,9 @@ public class Main {
         System.out.println("The result of the multiplying the two matrices are;");
         printMatrix(matrixC);
 
+        //close scanner
+        sc.close();
+
 
     }
 }
