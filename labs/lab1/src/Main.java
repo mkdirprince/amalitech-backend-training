@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Main {
 
     // Returns the maximum grade
@@ -94,6 +96,39 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        System.out.println("Hello, World!");
+
+        // scanner for getting inputs on the cli
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter the total number students: ");
+        int N = 0; // total number of students
+
+        // checks of there is a next value for the input
+        if (sc.hasNextInt()) {
+            N = sc.nextInt();
+        }  else {
+            System.out.println("Invalid input. Please enter a valid integer");
+        }
+
+        // prompts user to enter the grades of the user
+        System.out.println("Enter the grades of the students separated by a space");
+        int[] scores = new int[N];
+        for (int i = 0; i < N; i++) {
+            if (sc.hasNextInt()) {
+                scores[i] = sc.nextInt();
+            } else {
+                System.out.println("Invalid input. Please enter a valid integer");
+            }
+        }
+
+        // computed statistics
+        System.out.printf("The maximum grade is %d\n", maxGrade(scores));
+        System.out.printf("The minimum grade is %d\n", minGrade(scores));
+        System.out.printf("The average grade is %f\n", averageGrade(scores));
+
+        System.out.println();
+
+        //prints the graph
+        System.out.println("Graph");
+        getGraph(scores);
     }
 }
