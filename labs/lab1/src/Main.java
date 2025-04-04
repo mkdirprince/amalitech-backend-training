@@ -107,6 +107,7 @@ public class Main {
             N = sc.nextInt();
         }  else {
             System.out.println("Invalid input. Please enter a valid integer");
+            return;
         }
 
         // prompts user to enter the grades of the user
@@ -117,6 +118,7 @@ public class Main {
                 scores[i] = sc.nextInt();
             } else {
                 System.out.println("Invalid input. Please enter a valid integer");
+                return;
             }
         }
 
@@ -130,5 +132,8 @@ public class Main {
         //prints the graph
         System.out.println("Graph");
         getGraph(scores);
+
+        // close the scanner
+        sc.close();
     }
 }
