@@ -38,6 +38,14 @@ public class Main {
         return sumScores;
     }
 
+    // Returns the average grade
+    public static double averageGrade(int[] scores) {
+
+        int sumOfScores = sumScores(scores);
+
+        return (double) sumOfScores / scores.length;
+    }
+
     public static void main(String[] args) {
         System.out.println("Hello, World!");
     }
