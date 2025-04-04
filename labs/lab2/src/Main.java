@@ -149,19 +149,11 @@ public class Main {
         System.out.println("Matrix A:");
         int[][] matrixA = getMatrix(sc, "A");
 
-        // if matrixA is empty
-        if (matrixA == null) {
-            System.out.println("Pleaser correctly input the matrix values");
-            return;
-        }
+
 
         System.out.println("\nMatrix B:");
         int[][] matrixB = getMatrix(sc, "B");
 
-        if (matrixB == null) {
-            System.out.println("Pleaser correctly input the matrix values");
-            return;
-        }
 
         // if the number of columns of matrix A is not equal to the rows of matrix B then, multiplying the matrix won't be possible
         if (matrixA[0].length != matrixB.length) {
