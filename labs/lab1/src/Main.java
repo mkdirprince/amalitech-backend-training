@@ -72,6 +72,27 @@ public class Main {
         System.out.println("     I    0-20   I   21-40 I  41-60  I  61-80  I  81-100 I");
     }
 
+    // Print the graph for the score distribution and  frequency
+    public static void getGraph(int[] scores) {
+        // Grade distribution
+        int[] stats = new int [5]; // [0, 0, 0, 0]
+        for (int score : scores) {
+            if (score > 80) {
+                stats[4]++;
+            } else if (score >= 61) {
+                stats[3]++;
+            } else if (score >= 41) {
+                stats[2]++;
+            } else if (score >= 21) {
+                stats[1]++;
+            } else {
+                stats[0]++;
+            }
+        }
+
+        printGraph(stats);
+    }
+
     public static void main(String[] args) {
         System.out.println("Hello, World!");
     }
