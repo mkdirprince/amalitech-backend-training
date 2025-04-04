@@ -27,6 +27,17 @@ public class Main {
         return min;
     }
 
+    // Returns the sum of all the scores
+    public static int sumScores(int[] scores) {
+        int sumScores = 0;
+
+        for (int score : scores) {
+            sumScores += score;
+        }
+
+        return sumScores;
+    }
+
     public static void main(String[] args) {
         System.out.println("Hello, World!");
     }
