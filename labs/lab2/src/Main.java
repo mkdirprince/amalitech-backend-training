@@ -55,55 +55,75 @@ public class Main {
 
     // method to get the matrix from the user
     public static int[][] getMatrix(Scanner sc, String label) {
-        System.out.printf("Please enter the sizes of Matrix %s (e.g., 2,3 for 2 rows and 3 columns):%n", label);
-        String input = sc.nextLine();
-        int[] dimensions = parsedInputs(input);
+        int rows, cols;
 
-        if (dimensions[0] == -1 || dimensions[1] == -1) {
-            System.out.println("Invalid input, please enter in the format: row,column (e.g., 2,3).");
-            return null;
+        // Loop until valid matrix dimensions are provided
+        while (true) {
+            System.out.printf("Please enter the sizes of Matrix %s (e.g., 2,3 for 2 rows and 3 columns):%n", label);
+            String input = sc.nextLine();
+            int[] dimensions = parsedInputs(input);
+            if (dimensions[0] != -1 && dimensions[1] != -1) {
+                rows = dimensions[0];
+                cols = dimensions[1];
+                break; // valid input, exit loop
+            }
+
+            // Show error and prompt again
+            System.out.println("Invalid input. Try again.");
         }
 
-        // getting the rows and cols
-        int rows = dimensions[0];
-        int cols = dimensions[1];
-
-        // Info for user
-        System.out.println("Enter the matrix as shown in the example below:");
-        System.out.println("Example of a 3 x 2 matrix");
+        // user info
+        System.out.println("Enter the matrix values row by row (e.g., for a 2x3 matrix):");
         System.out.println("12 4 4");
         System.out.println("3 4 5");
-        System.out.printf("Please enter your matrix %s:%n%n", label);
+        System.out.printf("Please enter Matrix %s:%n", label);
 
-        // matrix variable to hold the values user entered
+        //  Allocate space for the matrix
         int[][] matrix = new int[rows][cols];
 
-        // populating the matrix with values entered by user
+        // populate matrix
         populateMatrix(matrix, rows, cols, sc);
-
-        // returning the matrix
         return matrix;
     }
 
     // method to populate the matrix the user types
     public static void populateMatrix (int[][] matrix, int rows, int cols, Scanner sc) {
         for (int i = 0; i < rows; i++) {
-            String line = sc.nextLine();
-            String[] values = line.trim().split("\\s+");
-            for (int j = 0; j < cols; j++) {
 
-                try {
-                    int value = Integer.parseInt(values[j]);
-                    if (value < 0) {
-                        System.out.println("Invalid input: Please ensure all values are positive integers");
-                        return;
-                    }
-                    matrix[i][j] = Integer.parseInt(values[j]);
-                } catch (NumberFormatException e) {
-                    System.out.println("Invalid input: Please ensure all values are positive integers");
-                    return;
+            // Loop until valid matrix values are given
+            while (true) {
+                System.out.printf("Row %d: ", i + 1);
+                String line = sc.nextLine().trim();
+                String[] values = line.split("\\s+");
+
+                // Check if user provided correct number of values for the row
+                if (values.length != cols) {
+                    System.out.println("Incorrect number of values. Please enter " + cols + " integers.");
+                    continue;
                 }
 
+                boolean isValid = true;
+
+                // Parse and validate each value in the row
+                for (int j = 0; j < cols; j++) {
+                    try {
+                        int val = Integer.parseInt(values[j]);
+                        if (val < 0) {
+                            System.out.println("Invalid input: only non-negative integers allowed.");
+                            isValid = false;
+                            break;
+                        }
+
+                        // Assign the parsed value to the matrix
+                        matrix[i][j] = val;
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input: Please enter integers only.");
+                        isValid = false;
+                        break;
+                    }
+                }
+
+                if (isValid) break; // move to next row
             }
         }
     }
