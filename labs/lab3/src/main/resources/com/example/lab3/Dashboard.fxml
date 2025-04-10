@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab3.DashboardController">
+   <children>
+      <!-- Greeting -->
+      <Label fx:id="greetingLabel" layoutX="50.0" layoutY="20.0" text="Hi, [Name]">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+
+      <!-- Account Details -->
+      <Label fx:id="accountDetailsLabel" layoutX="50.0" layoutY="60.0" text="Account: [Type] - Account Number: [Number] - Balance: [Amount]" />
+
+
+      <!-- Transaction History -->
+      <Label layoutX="50.0" layoutY="100.0" text="Recent Transactions:" />
+      <ListView fx:id="transactionList" layoutX="50.0" layoutY="130.0" prefHeight="200.0" prefWidth="500.0">
+         <style>
+            -fx-background-color: white;
+            -fx-border-color: gray;
+            -fx-border-width: 1;
+         </style>
+      </ListView>
+
+      <!-- Transaction Limit Controls -->
+      <Label layoutX="50.0" layoutY="340.0" text="Show last:" />
+      <TextField fx:id="transactionLimitField" layoutX="120.0" layoutY="336.0" prefWidth="50.0" promptText="5" />
+      <Button fx:id="updateLimitBtn" layoutX="180.0" layoutY="336.0" text="Update" onAction="#updateTransactionLimit" />
+      <Label fx:id="limitErrorLabel" layoutX="250.0" layoutY="340.0" text="" style="-fx-text-fill: red;" />
+
+      <!-- Deposit/Withdraw Controls -->
+      <TextField fx:id="amountField" layoutX="50.0" layoutY="370.0" promptText="Enter amount" />
+      <Button fx:id="depositBtn" layoutX="50.0" layoutY="410.0" text="Deposit" onAction="#handleDeposit" />
+      <Button fx:id="withdrawBtn" layoutX="150.0" layoutY="410.0" text="Withdraw" onAction="#handleWithdraw" />
+      <Button fx:id="logoutBtn" layoutX="250.0" layoutY="410.0" text="Logout" onAction="#handleLogout" />
+
+      <!-- Feedback Labels -->
+      <Label fx:id="errorLabel" layoutX="50.0" layoutY="450.0" text="" style="-fx-text-fill: red;" />
+      <Label fx:id="successLabel" layoutX="50.0" layoutY="470.0" text="" style="-fx-text-fill: green;" />
+   </children>
+</AnchorPane>
