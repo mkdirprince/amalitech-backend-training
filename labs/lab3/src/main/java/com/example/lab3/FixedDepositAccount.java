@@ -60,7 +60,7 @@ public class FixedDepositAccount extends BankAccount{
         double interestAmount = balance * interestRate * ((double) duration / MAXIMUM_DURATION);
 
         updateBalance(interestAmount);
-        addTransaction(interestAmount, "DEBIT");
+        addTransaction(interestAmount, "CREDIT");
     }
 
 
@@ -88,7 +88,7 @@ public class FixedDepositAccount extends BankAccount{
         }
 
         updateBalance(-amount);
-        addTransaction(amount, "CREDIT");
+        addTransaction(amount, "DEBIT");
     }
 
 }

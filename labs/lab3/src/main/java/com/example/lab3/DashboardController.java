@@ -52,7 +52,7 @@ public class DashboardController implements Initializable {
 
                     Text amountText = new Text(String.format("$%.2f", transaction.getAmount()));
                     amountText.setStyle(
-                            transaction.getType().equals("Withdrawal") ?
+                            transaction.getType().equals("DEBIT") ?
                                     "-fx-fill: red;" : "-fx-fill: green;"
                     );
                     HBox amountBox = new HBox(amountText);

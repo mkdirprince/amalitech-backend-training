@@ -27,7 +27,7 @@ public class SavingsAccount extends BankAccount {
             throw new IllegalArgumentException("Minimum deposit amount is 5.0");
         }
         updateBalance(amount);
-        addTransaction(amount, "DEBIT");
+        addTransaction(amount, "CREDIT");
     }
 
     @Override
@@ -39,7 +39,7 @@ public class SavingsAccount extends BankAccount {
         calculateInterest();
 
         updateBalance(-amount);
-        addTransaction(amount, "CREDIT");
+        addTransaction(amount, "DEBIT");
     }
 
 }

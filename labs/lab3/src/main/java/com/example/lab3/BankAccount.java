@@ -32,7 +32,7 @@ public abstract class BankAccount implements BankOperations {
     public String getAccountHolder() {
         return accountHolder;
     }
-    
+
     // returns the account number
     public String getAccountNumber() {
         return accountNumber;

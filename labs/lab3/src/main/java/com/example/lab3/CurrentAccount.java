@@ -20,7 +20,7 @@ public class CurrentAccount extends BankAccount {
         }
 
         updateBalance(amount);
-        addTransaction(amount, "DEBIT");
+        addTransaction(amount, "CREDIT");
     }
 
     @Override
@@ -34,6 +34,6 @@ public class CurrentAccount extends BankAccount {
         }
 
         updateBalance(-amount);
-        addTransaction(amount, "CREDIT");
+        addTransaction(amount, "DEBIT");
     }
 }
