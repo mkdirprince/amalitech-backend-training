@@ -4,7 +4,6 @@ import java.util.UUID;
 
 public abstract class BankAccount implements BankOperations {
     private static int accountCounter = 1000000; // To start numbering accounts from this point
-    private final String accountHolderId;
 
     protected String accountHolder;
     protected String accountType;
@@ -18,7 +17,6 @@ public abstract class BankAccount implements BankOperations {
         this.accountHolder = accountName;
         this.accountType = type;
         this.accountNumber = generateAccountNumber();
-        this.accountHolderId = String.format("%s-%s", type, UUID.randomUUID().toString());
         this.balance = initialBalance;
         this.transactionHistory = new SLList(new Transaction(initialBalance, "INITIAL"));
     }
@@ -34,12 +32,7 @@ public abstract class BankAccount implements BankOperations {
     public String getAccountHolder() {
         return accountHolder;
     }
-
-    // returns the ID of the account holder
-    public String getAccountHolderId() {
-        return accountHolderId;
-    }
-
+    
     // returns the account number
     public String getAccountNumber() {
         return accountNumber;
