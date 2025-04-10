@@ -70,7 +70,7 @@ public class DashboardController implements Initializable {
     private void updateDisplay() {
         if (account != null) {
             greetingLabel.setText("Hi, " + account.getAccountHolder());
-            String details = String.format("Account: %s - %s - Balance: %.2f",
+            String details = String.format("Account: %s - Account Number %s - Balance: %.2f",
                     account.getAccountType(), account.getAccountNumber(), account.getBalance());
             if ("FIXED".equals(account.getAccountType())) {
                 details += String.format(" - Period: %d days", account.getDuration());
