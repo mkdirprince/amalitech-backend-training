@@ -17,8 +17,9 @@ public class SavingsAccount extends BankAccount {
 
     public void calculateInterest() {
         double periodicInterestRate = ANNUAL_INTEREST_RATE / PERIODS_PER_YEAR;
-        double interest = balance * periodicInterestRate; // Monthly interest
+        double interest = getBalance() * periodicInterestRate; // Monthly interest
         updateBalance(interest);
+        addTransaction(interest, "CREDIT");
     }
 
     @Override
@@ -32,7 +33,7 @@ public class SavingsAccount extends BankAccount {
 
     @Override
     public void withdraw(double amount) {
-        if (balance - amount < MINIMUM_BALANCE) {
+        if (getBalance() - amount < MINIMUM_BALANCE) {
             throw new IllegalStateException("Withdrawal denied: minimum balance of 50 required.");
         }
 
