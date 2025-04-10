@@ -59,8 +59,8 @@ public class FixedDepositAccount extends BankAccount{
 
         double interestAmount = balance * interestRate * ((double) duration / MAXIMUM_DURATION);
 
-        this.balance += interestAmount;
-        this.transactionHistory.addFirst(new Transaction(interestAmount, "DEBIT"));
+        updateBalance(interestAmount);
+        addTransaction(interestAmount, "DEBIT");
     }
 
 
