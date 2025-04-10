@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.lab3.HelloController">
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
-    </padding>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="742.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.lab3.BankApplicationController">
+   <children>
+      <Label layoutX="229.0" layoutY="7.0" text="CREATE ACCOUNT">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="errorLabel" layoutX="190.0" layoutY="320.0" style="-fx-text-fill: red;" text="" />
 
-    <Label fx:id="welcomeText"/>
-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
-</VBox>
+      <Label layoutX="188.0" layoutY="45.0" text="Account Name" />
+      <TextField fx:id="Aname" layoutX="188.0" layoutY="71.0" prefWidth="316.0" />
+
+      <Label layoutX="191.0" layoutY="116.0" text="Account Type" />
+      <ComboBox fx:id="Atype" layoutX="188.0" layoutY="144.0" prefHeight="26.0" prefWidth="316.0" />
+
+      <Label layoutX="189.0" layoutY="192.0" text="Initial Deposit" />
+      <TextField fx:id="InitialDeposit" layoutX="188.0" layoutY="215.0" prefHeight="29.0" prefWidth="316.0" promptText="Minimum deposit: 50" />
+
+      <Label fx:id="periodLabel" layoutX="189.0" layoutY="260.0" text="Period (days)" visible="false" />
+      <TextField fx:id="periodField" layoutX="188.0" layoutY="283.0" prefHeight="29.0" prefWidth="316.0" promptText="90-365 days (default: 90)" visible="false" />
+
+      <Button fx:id="btn1" layoutX="190.0" layoutY="340.0" mnemonicParsing="false" onMouseClicked="#handleSubmit" prefHeight="35.0" prefWidth="309.0" text="Submit" />
+   </children>
+</AnchorPane>
