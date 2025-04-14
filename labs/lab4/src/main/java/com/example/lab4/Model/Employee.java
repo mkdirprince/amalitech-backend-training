@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Employee<T> implements Comparable<Employee<T>> {
     //instance variables
-    private T employeeId;
+    private final T employeeId;
     private String name; // full name
     private String department;
     private double salary;
@@ -63,7 +63,15 @@ public class Employee<T> implements Comparable<Employee<T>> {
     public void setPerformanceRating(double rating) {
         this.performanceRating = rating;
     }
-    
+
+    public void setYearsOfExperience(int years) {
+        this.yearsOfExperience = years;
+    }
+
+    public void setIsActive(boolean isActive) {
+        this.isActive = isActive;
+    }
+
 
     @Override
     public int compareTo(Employee<T> other) {
@@ -71,5 +79,18 @@ public class Employee<T> implements Comparable<Employee<T>> {
             throw new NullPointerException("Cannot compare with null");
         }
         return Integer.compare(other.yearsOfExperience, this.yearsOfExperience);
+    }
+
+    @Override
+    public String toString() {
+        return "Employee {" +
+                "ID=" + employeeId +
+                ", Name='" + name + '\'' +
+                ", Department='" + department + '\'' +
+                ", Salary=" + salary +
+                ", Performance=" + performanceRating +
+                ", Experience=" + yearsOfExperience +
+                ", Active=" + isActive +
+                '}';
     }
 }
