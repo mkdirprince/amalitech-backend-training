@@ -1,9 +1,6 @@
 package com.example.lab4.Model;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class EmployeeDatabase<T> {
     private final Map<T, Employee<T>> employees;
@@ -50,8 +47,8 @@ public class EmployeeDatabase<T> {
         return employeeToUpdate;
     }
 
-    public Collection<Employee<T>> getAllEmployees() {
-        return employees.values();
+    public List<Employee<T>> getAllEmployees() {
+        return new ArrayList<Employee<T>>(employees.values());
     }
 
     public int getSize() {
