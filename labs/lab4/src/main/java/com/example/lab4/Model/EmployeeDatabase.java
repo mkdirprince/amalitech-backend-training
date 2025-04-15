@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class EmployeeDatabase<T> {
-    private final Map<T, Employee<T>> employees;
+    private final HashMap<T, Employee<T>> employees;
     private int size;
 
 
@@ -79,6 +79,10 @@ public class EmployeeDatabase<T> {
     // returns a list of all employees
     public List<Employee<T>> getAllEmployees() {
         return List.copyOf(employees.values());
+    }
+
+    public Iterator<Employee<T>> getEmployeeIterator(){
+        return employees.values().iterator();
     }
 
     public int getSize() {
