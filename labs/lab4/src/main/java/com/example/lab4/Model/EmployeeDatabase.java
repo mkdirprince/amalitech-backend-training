@@ -1,6 +1,7 @@
 package com.example.lab4.Model;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class EmployeeDatabase<T> {
     private final Map<T, Employee<T>> employees;
@@ -47,8 +48,37 @@ public class EmployeeDatabase<T> {
         return employeeToUpdate;
     }
 
+    // returns a list of Employees which have the parameter department
+    public List<Employee<T>> findByDepartment(String department){
+        return employees.values().stream()
+                .filter(employee -> employee.getDepartment().equalsIgnoreCase(department))
+                .collect(Collectors.toList());
+    }
+
+    // returns  a list of Employees with same name as the parameter "name"
+    public List<Employee<T>> findByName(String name) {
+        return employees.values().stream()
+                .filter(employee -> employee.getName().equalsIgnoreCase(name))
+                .collect(Collectors.toList());
+    }
+
+    // filters the  Employees with the minimum performance as the parameter
+    public List<Employee<T>> findByMinPerformanceRating(double rating) {
+        return employees.values().stream()
+                .filter(employee -> employee.getPerformanceRating() >= rating)
+                .collect(Collectors.toList());
+    }
+
+    // filters Employees based on salary range
+    public List<Employee<T>> findBySalaryRange(double min, double max) {
+        return employees.values().stream()
+                .filter(employee -> employee.getSalary() >= min && employee.getSalary() <= max)
+                .collect(Collectors.toList());
+    }
+
+    // returns a list of all employees
     public List<Employee<T>> getAllEmployees() {
-        return new ArrayList<Employee<T>>(employees.values());
+        return List.copyOf(employees.values());
     }
 
     public int getSize() {
