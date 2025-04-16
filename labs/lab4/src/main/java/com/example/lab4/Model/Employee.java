@@ -44,6 +44,10 @@ public class Employee<T> implements Comparable<Employee<T>> {
         return this.performanceRating;
     }
 
+    public int getYearsOfExperience() {
+        return this.yearsOfExperience;
+    }
+
     public boolean getIsActive() {
         return this.isActive;
     }
