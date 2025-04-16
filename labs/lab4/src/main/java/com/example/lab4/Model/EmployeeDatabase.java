@@ -1,10 +1,15 @@
 package com.example.lab4.Model;
 
+import com.example.lab4.Utils.EmployeeSalaryComparator;
+import com.example.lab4.Utils.EmployeeOutputUtil;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class EmployeeDatabase<T> {
+    private static final double PERCENT_DENOMINATOR = 10;
     private final HashMap<T, Employee<T>> employees;
+    private final EmployeeOutputUtil<T> printer = new EmployeeOutputUtil<>();
     private int size;
 
 
@@ -13,10 +18,9 @@ public class EmployeeDatabase<T> {
         size = 0;
     }
 
-    public Employee<T> addEmployee(Employee<T> employee){
+    public void addEmployee(Employee<T> employee){
         employees.put(employee.getEmployeeId(), employee);
         size += 1;
-        return employee;
     }
 
     public void removeEmployee(T employeeId) {
@@ -76,6 +80,30 @@ public class EmployeeDatabase<T> {
                 .collect(Collectors.toList());
     }
 
+    // give raise based on performance rating
+    public void applyPerformanceRaise(double rating, double percentageRaise){
+        employees.values().stream()
+                .filter(employee -> employee.getPerformanceRating() >= rating)
+                .forEach(employee -> employee.setSalary( employee.getSalary() * (1 + percentageRaise / PERCENT_DENOMINATOR)));
+    }
+
+
+    public List<Employee<T>> getTopNHighestPaidEmployee(int n) {
+        return employees.values().stream()
+                .sorted(new EmployeeSalaryComparator<>())
+                .limit(n)
+                .collect(Collectors.toList());
+    }
+
+    public double getAverageSalaryByDepartment(String department) {
+        return employees.values().stream()
+                .filter(employee -> employee.getDepartment().equalsIgnoreCase(department))
+                .mapToDouble(Employee::getSalary)
+                .average()
+                .orElse(0.0);
+    }
+
+
     // returns a list of all employees
     public List<Employee<T>> getAllEmployees() {
         return List.copyOf(employees.values());
@@ -87,6 +115,40 @@ public class EmployeeDatabase<T> {
 
     public int getSize() {
         return size;
+    }
+
+    public void displayEmployeeDetails() {
+        if (employees.isEmpty()) {
+            printer.printEmptyEmployeesDetail();
+            return;
+        }
+
+        // Header
+        printer.printDetailsHeader();
+
+        // Each employee's details
+        for (Employee<T> employee : employees.values()) {
+            printer.printEmployeeDetails(employee);
+        }
+
+        // Footer
+        printer.printDetailsFooter();
+    }
+
+    public void displayEmployeeReports() {
+        if (employees.isEmpty()) {
+            printer.printEmptyReport();
+            return;
+        }
+
+        // Header
+        printer.printReportHeader();
+
+        // Reports
+        printer.printEmployeeReports(employees.values().stream().toList());
+
+        // Footer
+        printer.printReportFooter();
     }
 
 }
