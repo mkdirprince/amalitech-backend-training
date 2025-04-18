@@ -55,9 +55,17 @@ public class EmployeeValidator {
             throw new IllegalArgumentException("Name cannot be empty");
         }
 
+        if (!name.matches("[a-zA-Z\\s]+")) {
+            throw new IllegalArgumentException("Invalid name format");
+        }
+
         // Validate department
         if (department == null || department.trim().isEmpty()) {
             throw new IllegalArgumentException("Department cannot be empty");
+        }
+
+        if (!department.matches("[a-zA-Z\\s]+")) {
+            throw new IllegalArgumentException("Invalid department format");
         }
 
         // Validate salary

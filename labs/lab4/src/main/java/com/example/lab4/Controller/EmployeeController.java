@@ -8,6 +8,7 @@ import com.example.lab4.Utils.EmployeeValidator;
 import javafx.animation.PauseTransition;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
@@ -103,6 +104,7 @@ public class EmployeeController {
     private void applyFilters() {
         filteredEmployees.setPredicate(employee -> {
             boolean searchMatch = true;
+            boolean salaryMatch = true;
             boolean departmentMatch = true;
 
             // Search filter
@@ -119,7 +121,21 @@ public class EmployeeController {
                 departmentMatch = employee.getDepartment().equals(selectedDepartment);
             }
 
-            return searchMatch && departmentMatch;
+
+            // Salary range filter
+
+            String minSalaryText = minSalaryField.getText();
+            String maxSalaryText = maxSalaryField.getText();
+
+            double minSalary = minSalaryText.isEmpty() ? Double.MIN_VALUE : Double.parseDouble(minSalaryText);
+            double maxSalary = maxSalaryText.isEmpty() ? Double.MAX_VALUE : Double.parseDouble(maxSalaryText);
+
+            double employeeSalary = employee.getSalary();
+            salaryMatch = (employeeSalary >= minSalary) && (employeeSalary <= maxSalary);
+
+
+
+            return searchMatch && departmentMatch && salaryMatch;
         });
     }
 
@@ -348,36 +364,41 @@ public class EmployeeController {
 
     @FXML
     private void handleFilterByRating() {
+        String ratingText = minRatingCombo.getValue();
+        String departmentFilter = departmentFilterCombo.getValue();
+        String searchQuery = searchField.getText().trim().toLowerCase();
+
         try {
-            String ratingText = minRatingCombo.getValue();
-            if (ratingText == null) {
-                filteredEmployees.setPredicate(employee -> {
-                    boolean matchesDepartment = departmentFilterCombo.getValue().equals("All") ||
-                            employee.getDepartment().equals(departmentFilterCombo.getValue());
-                    boolean matchesSearch = searchField.getText().isEmpty() ||
-                            employee.getName().toLowerCase().contains(searchField.getText().toLowerCase()) ||
-                            employee.getDepartment().toLowerCase().contains(searchField.getText().toLowerCase());
-                    return matchesDepartment && matchesSearch;
-                });
-                showStatus("Rating filter cleared", Color.web("#10b981"));
-                return;
+            // If no rating is selected or input is blank, skip rating filter
+            Double rating = null;
+            if (ratingText != null && !ratingText.isEmpty()) {
+                EmployeeValidator.validateRating(ratingText); // Validate e.g., range, format
+                rating = Double.parseDouble(ratingText);
             }
-            EmployeeValidator.validateRating(ratingText);
-            double rating = Double.parseDouble(ratingText);
+
+            double finalRating = (rating != null) ? rating : Double.MIN_VALUE;
+            boolean applyRatingFilter = rating != null;
+
             filteredEmployees.setPredicate(employee -> {
-                boolean matchesRating = employee.getPerformanceRating() >= rating;
-                boolean matchesDepartment = departmentFilterCombo.getValue().equals("All") ||
-                        employee.getDepartment().equals(departmentFilterCombo.getValue());
-                boolean matchesSearch = searchField.getText().isEmpty() ||
-                        employee.getName().toLowerCase().contains(searchField.getText().toLowerCase()) ||
-                        employee.getDepartment().toLowerCase().contains(searchField.getText().toLowerCase());
+                boolean matchesRating = !applyRatingFilter || employee.getPerformanceRating() >= finalRating;
+                boolean matchesDepartment = departmentFilter.equals("All") || employee.getDepartment().equalsIgnoreCase(departmentFilter);
+                boolean matchesSearch = searchQuery.isEmpty()
+                        || employee.getName().toLowerCase().contains(searchQuery)
+                        || employee.getDepartment().toLowerCase().contains(searchQuery);
+
                 return matchesRating && matchesDepartment && matchesSearch;
             });
-            showStatus("Filtered employees by minimum rating: " + rating, Color.web("#10b981"));
+
+            if (applyRatingFilter) {
+                showStatus("Filtered employees by minimum rating: " + finalRating, Color.web("#10b981"));
+            } else {
+                showStatus("Rating filter cleared", Color.web("#10b981"));
+            }
         } catch (IllegalArgumentException e) {
             showStatus("Error: " + e.getMessage(), Color.web("#ef4444"));
         }
     }
+
 
     @FXML
     private void handleFilterBySalaryRange() {
@@ -404,8 +425,7 @@ public class EmployeeController {
     private void handleShowTop10Salaries() {
         try {
             List<Employee<UUID>> top10Employees = employeeService.getTopNHighestPaidEmployees(10);
-            filteredEmployees.setPredicate(top10Employees::contains);
-            employeeTable.refresh();
+            employeeTable.setItems(FXCollections.observableArrayList(top10Employees));
             showStatus("Showing top 10 highest-paid employees", Color.web("#10b981"));
         } catch (IllegalArgumentException e) {
             showStatus("Error: " + e.getMessage(), Color.web("#ef4444"));
