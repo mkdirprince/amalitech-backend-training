@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class EmployeeDatabase<T> {
-    private static final double PERCENT_DENOMINATOR = 10;
+    private static final double PERCENT_DENOMINATOR = 100.0;
     private final HashMap<T, Employee<T>> employees;
     private final EmployeeOutputUtil<T> printer = new EmployeeOutputUtil<>();
     private int size;
@@ -32,6 +32,19 @@ public class EmployeeDatabase<T> {
         size -= 1;
     }
 
+    // helper function to update employee details
+    public void updateEmployeeField( Employee<T> employeeToUpdate, String field, Object value) {
+        switch (field) {
+            case "name" -> employeeToUpdate.setName((String) value);
+            case "department" -> employeeToUpdate.setDepartment((String) value);
+            case "salary" -> employeeToUpdate.setSalary((double) value);
+            case "performanceRating" -> employeeToUpdate.setPerformanceRating((double) value);
+            case "yearsOfExperience" -> employeeToUpdate.setYearsOfExperience((int) value);
+            case "isActive" -> employeeToUpdate.setIsActive((boolean) value);
+            default -> throw new IllegalArgumentException("Unknown field: " + field);
+        }
+    }
+
     public Employee<T> updateEmployeeDetails(T employeeId, String field, Object newValue) {
         if (!employees.containsKey(employeeId)) {
             throw new IllegalStateException("Employee with ID " + employeeId + " not found.");
@@ -39,15 +52,7 @@ public class EmployeeDatabase<T> {
 
         Employee<T> employeeToUpdate = employees.get(employeeId);
 
-        switch (field) {
-            case "name" -> employeeToUpdate.setName((String) newValue);
-            case "department" -> employeeToUpdate.setDepartment((String) newValue);
-            case "salary" -> employeeToUpdate.setSalary((double) newValue);
-            case "performanceRating" -> employeeToUpdate.setPerformanceRating((double) newValue);
-            case "yearsOfExperience" -> employeeToUpdate.setYearsOfExperience((int) newValue);
-            case "isActive" -> employeeToUpdate.setIsActive((boolean) newValue);
-            default -> throw new IllegalArgumentException("Unknown field: " + field);
-        }
+        updateEmployeeField(employeeToUpdate, field, newValue);
 
         return employeeToUpdate;
     }
@@ -84,7 +89,9 @@ public class EmployeeDatabase<T> {
     public void applyPerformanceRaise(double rating, double percentageRaise){
         employees.values().stream()
                 .filter(employee -> employee.getPerformanceRating() >= rating)
-                .forEach(employee -> employee.setSalary( employee.getSalary() * (1 + percentageRaise / PERCENT_DENOMINATOR)));
+                .forEach(employee -> employee.setSalary(
+                        Math.round(employee.getSalary() * (1 + (percentageRaise / PERCENT_DENOMINATOR))
+                        )));
     }
 
 
