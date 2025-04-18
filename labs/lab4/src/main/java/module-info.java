@@ -6,4 +6,5 @@ module com.example.lab4 {
 
     exports com.example.lab4.Model;
     exports com.example.lab4.View;
+    exports com.example.lab4.Utils;
 }
