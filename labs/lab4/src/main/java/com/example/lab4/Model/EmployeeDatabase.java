@@ -1,6 +1,7 @@
 package com.example.lab4.Model;
 
 import com.example.lab4.Exceptions.EmployeeNotFoundException;
+import com.example.lab4.Exceptions.InvalidDepartmentException;
 import com.example.lab4.Utils.EmployeeSalaryComparator;
 import com.example.lab4.Utils.EmployeeOutputUtil;
 
@@ -103,12 +104,24 @@ public class EmployeeDatabase<T> {
                 .collect(Collectors.toList());
     }
 
-    public double getAverageSalaryByDepartment(String department)  {
+    public double getAverageSalaryByDepartment(String department) throws InvalidDepartmentException {
+
+        if (department == null || department.trim().isEmpty()) {
+            throw new InvalidDepartmentException("Department cannot be null or empty");
+        }
+
+        boolean departmentExists = employees.values().stream()
+                .anyMatch(employee -> employee.getDepartment().equalsIgnoreCase(department));
+
+        if (!departmentExists) {
+            throw new InvalidDepartmentException("Unknown departement: " + department);
+        }
+
         return employees.values().stream()
                 .filter(employee -> employee.getDepartment().equalsIgnoreCase(department))
                 .mapToDouble(Employee::getSalary)
                 .average()
-                .orElse(0.0);
+                .orElseThrow(() -> new InvalidDepartmentException("No employee found in the department: " + department));
     }
 
 
