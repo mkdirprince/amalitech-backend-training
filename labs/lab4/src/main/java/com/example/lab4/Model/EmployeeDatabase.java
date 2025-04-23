@@ -1,5 +1,6 @@
 package com.example.lab4.Model;
 
+import com.example.lab4.Exceptions.EmployeeNotFoundException;
 import com.example.lab4.Utils.EmployeeSalaryComparator;
 import com.example.lab4.Utils.EmployeeOutputUtil;
 
@@ -45,9 +46,9 @@ public class EmployeeDatabase<T> {
         }
     }
 
-    public Employee<T> updateEmployeeDetails(T employeeId, String field, Object newValue) {
+    public Employee<T> updateEmployeeDetails(T employeeId, String field, Object newValue) throws EmployeeNotFoundException {
         if (!employees.containsKey(employeeId)) {
-            throw new IllegalStateException("Employee with ID " + employeeId + " not found.");
+            throw new EmployeeNotFoundException("Employee with ID " + employeeId + " not found.");
         }
 
         Employee<T> employeeToUpdate = employees.get(employeeId);
@@ -102,7 +103,7 @@ public class EmployeeDatabase<T> {
                 .collect(Collectors.toList());
     }
 
-    public double getAverageSalaryByDepartment(String department) {
+    public double getAverageSalaryByDepartment(String department)  {
         return employees.values().stream()
                 .filter(employee -> employee.getDepartment().equalsIgnoreCase(department))
                 .mapToDouble(Employee::getSalary)
