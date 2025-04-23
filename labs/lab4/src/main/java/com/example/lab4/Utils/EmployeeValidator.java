@@ -1,8 +1,10 @@
 package com.example.lab4.Utils;
 
+import com.example.lab4.Exceptions.InvalidDepartmentException;
+
 public class EmployeeValidator {
 
-    public static void validateEmployeeInput(String name, String department, String salaryStr, String ratingStr, String experienceStr) {
+    public static void validateEmployeeInput(String name, String department, String salaryStr, String ratingStr, String experienceStr) throws InvalidDepartmentException {
         // Validate name
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
@@ -14,11 +16,11 @@ public class EmployeeValidator {
 
         // Validate department
         if (department == null || department.trim().isEmpty()) {
-            throw new IllegalArgumentException("Department cannot be empty");
+            throw new InvalidDepartmentException("Department cannot be empty");
         }
 
         if (!department.matches("[a-zA-Z\\s]+")) {
-            throw new IllegalArgumentException("Invalid department format");
+            throw new InvalidDepartmentException("Invalid department format");
         }
 
         // Validate salary
@@ -116,9 +118,9 @@ public class EmployeeValidator {
         }
     }
 
-    public static void validateDepartment(String department) {
+    public static void validateDepartment(String department) throws InvalidDepartmentException {
         if (department == null || department.trim().isEmpty()) {
-            throw new IllegalArgumentException("Please select a valid department");
+            throw new InvalidDepartmentException("Please select a valid department");
         }
     }
 }
