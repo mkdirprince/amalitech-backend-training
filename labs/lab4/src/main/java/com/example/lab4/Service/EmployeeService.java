@@ -1,6 +1,7 @@
 package com.example.lab4.Service;
 
 import com.example.lab4.Exceptions.EmployeeNotFoundException;
+import com.example.lab4.Exceptions.InvalidDepartmentException;
 import com.example.lab4.Model.Employee;
 import com.example.lab4.Model.EmployeeDatabase;
 import javafx.collections.FXCollections;
@@ -95,7 +96,7 @@ public class EmployeeService {
         return employeeDatabase.getTopNHighestPaidEmployee(n);
     }
 
-    public double getAverageSalaryByDepartment(String department) {
+    public double getAverageSalaryByDepartment(String department) throws InvalidDepartmentException {
         return employeeDatabase.getAverageSalaryByDepartment(department);
     }
 }
