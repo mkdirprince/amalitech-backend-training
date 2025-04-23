@@ -1,5 +1,10 @@
 package com.example.lab4.Controller;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
+import com.example.lab4.Exceptions.EmployeeNotFoundException;
+import com.example.lab4.Exceptions.InvalidDepartmentException;
 import com.example.lab4.Model.Employee;
 import com.example.lab4.Service.EmployeeService;
 import com.example.lab4.Utils.EmployeeSalaryComparator;
@@ -25,6 +30,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class EmployeeController {
+
+    private static final Logger logger = Logger.getLogger(EmployeeController.class.getName());
 
     @FXML private TableView<Employee<UUID>> employeeTable;
     @FXML private TableColumn<Employee<UUID>, UUID> idColumn;
@@ -262,7 +269,7 @@ public class EmployeeController {
                 );
                 validationLabel.setText("");
                 actionButton.setDisable(false);
-            } catch (IllegalArgumentException e) {
+            } catch (IllegalArgumentException | InvalidDepartmentException e) {
                 validationLabel.setText("Error: " + e.getMessage());
                 actionButton.setDisable(true);
             }
@@ -296,7 +303,7 @@ public class EmployeeController {
                             Integer.parseInt(experienceField.getText()),
                             activeCheckBox.isSelected()
                     );
-                } catch (IllegalArgumentException e) {
+                } catch (IllegalArgumentException | InvalidDepartmentException e) {
                     validationLabel.setText("Error: " + e.getMessage());
                     return null;
                 }
@@ -332,7 +339,12 @@ public class EmployeeController {
         Dialog<Employee<UUID>> dialog = createEmployeeDialog(selected, "Update Employee", "Update");
         Optional<Employee<UUID>> result = dialog.showAndWait();
         result.ifPresent(employee -> {
-            employeeService.updateEmployee(employee);
+            try {
+                employeeService.updateEmployee(employee);
+            } catch (EmployeeNotFoundException e) {
+                showStatus("Employee with ID: " + employee.getEmployeeId() + " not found", Color.web("#ef4444"));
+
+            }
             if (!departmentFilterCombo.getItems().contains(employee.getDepartment())) {
                 departmentFilterCombo.getItems().add(employee.getDepartment());
             }
