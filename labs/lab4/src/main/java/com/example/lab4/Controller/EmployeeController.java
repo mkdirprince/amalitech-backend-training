@@ -2,6 +2,7 @@ package com.example.lab4.Controller;
 
 import com.example.lab4.Exceptions.EmployeeNotFoundException;
 import com.example.lab4.Exceptions.InvalidDepartmentException;
+import com.example.lab4.Exceptions.InvalidSalaryException;
 import com.example.lab4.Model.Employee;
 import com.example.lab4.Service.EmployeeService;
 import com.example.lab4.Utils.EmployeeSalaryComparator;
@@ -340,7 +341,7 @@ public class EmployeeController {
         result.ifPresent(employee -> {
             try {
                 employeeService.updateEmployee(employee);
-            } catch (EmployeeNotFoundException e) {
+            } catch (EmployeeNotFoundException | InvalidSalaryException e) {
                 showStatus("Employee with ID: " + employee.getEmployeeId() + " not found", Color.web("#ef4444"));
                 logger.warning("Validation failed: " + e.getMessage());
 
@@ -354,7 +355,7 @@ public class EmployeeController {
     }
 
     @FXML
-    private void handleDeleteEmployee() {
+    private void handleDeleteEmployee() throws EmployeeNotFoundException {
         Employee<UUID> selected = employeeTable.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showStatus("Error: Please select an employee to delete", Color.web("#ef4444"));
