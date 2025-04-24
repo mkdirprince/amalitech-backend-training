@@ -22,13 +22,18 @@ public class EmployeeDatabase<T> {
     }
 
     public void addEmployee(Employee<T> employee){
+
+        if (employee == null) {
+            throw new IllegalArgumentException("Cannot add null employee.");
+        }
+
         employees.put(employee.getEmployeeId(), employee);
         size += 1;
     }
 
-    public void removeEmployee(T employeeId) {
+    public void removeEmployee(T employeeId) throws EmployeeNotFoundException {
         if (!employees.containsKey(employeeId)) {
-            throw new IllegalStateException("Employee with ID " + employeeId + " not found.");
+            throw new EmployeeNotFoundException("Employee with ID " + employeeId + " not found.");
 
         }
         employees.remove(employeeId);
@@ -67,10 +72,16 @@ public class EmployeeDatabase<T> {
     }
 
     // returns a list of Employees which have the parameter department
-    public List<Employee<T>> findByDepartment(String department){
-        return employees.values().stream()
+    public List<Employee<T>> findByDepartment(String department) throws InvalidDepartmentException{
+        List<Employee<T>> result = employees.values().stream()
                 .filter(employee -> employee.getDepartment().equalsIgnoreCase(department))
                 .collect(Collectors.toList());
+
+        if (result.isEmpty()) {
+            throw new InvalidDepartmentException("No employees found in department: " + department);
+        }
+
+        return result;
     }
 
     // returns  a list of Employees with same name as the parameter "name"
