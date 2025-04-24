@@ -1,8 +1,5 @@
 package com.example.lab4.Controller;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
 import com.example.lab4.Exceptions.EmployeeNotFoundException;
 import com.example.lab4.Exceptions.InvalidDepartmentException;
 import com.example.lab4.Model.Employee;
@@ -28,9 +25,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class EmployeeController {
-
     private static final Logger logger = Logger.getLogger(EmployeeController.class.getName());
 
     @FXML private TableView<Employee<UUID>> employeeTable;
@@ -272,6 +269,7 @@ public class EmployeeController {
             } catch (IllegalArgumentException | InvalidDepartmentException e) {
                 validationLabel.setText("Error: " + e.getMessage());
                 actionButton.setDisable(true);
+                logger.warning("Validation failed: " + e.getMessage());
             }
         };
 
@@ -305,6 +303,7 @@ public class EmployeeController {
                     );
                 } catch (IllegalArgumentException | InvalidDepartmentException e) {
                     validationLabel.setText("Error: " + e.getMessage());
+                    logger.warning("Validation failed: " + e.getMessage());
                     return null;
                 }
             }
@@ -343,6 +342,7 @@ public class EmployeeController {
                 employeeService.updateEmployee(employee);
             } catch (EmployeeNotFoundException e) {
                 showStatus("Employee with ID: " + employee.getEmployeeId() + " not found", Color.web("#ef4444"));
+                logger.warning("Validation failed: " + e.getMessage());
 
             }
             if (!departmentFilterCombo.getItems().contains(employee.getDepartment())) {
@@ -408,6 +408,7 @@ public class EmployeeController {
             }
         } catch (IllegalArgumentException e) {
             showStatus("Error: " + e.getMessage(), Color.web("#ef4444"));
+            logger.warning("Validation failed: " + e.getMessage());
         }
     }
 
@@ -430,6 +431,7 @@ public class EmployeeController {
             showStatus("Filtered employees by salary range: $" + minSalary + " - $" + maxSalary, Color.web("#10b981"));
         } catch (IllegalArgumentException e) {
             showStatus("Error: " + e.getMessage(), Color.web("#ef4444"));
+            logger.warning("Validation failed: " + e.getMessage());
         }
     }
 
@@ -441,6 +443,7 @@ public class EmployeeController {
             showStatus("Showing top 10 highest-paid employees", Color.web("#10b981"));
         } catch (IllegalArgumentException e) {
             showStatus("Error: " + e.getMessage(), Color.web("#ef4444"));
+            logger.warning("Validation failed: " + e.getMessage());
         }
     }
 
@@ -501,6 +504,7 @@ public class EmployeeController {
                     showStatus("Applied " + percentage + "% raise for employees with rating ≥ " + rating, Color.web("#10b981"));
                 } catch (IllegalArgumentException e) {
                     showStatus("Error: " + e.getMessage(), Color.web("#ef4444"));
+                    logger.warning("Validation failed: " + e.getMessage());
                 }
             }
             return null;
