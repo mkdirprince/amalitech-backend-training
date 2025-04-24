@@ -64,7 +64,8 @@ public class EmployeeDatabase<T> {
             throw new EmployeeNotFoundException("Employee with ID " + employeeId + " not found.");
         }
 
-        Employee<T> employeeToUpdate = employees.get(employeeId);
+        // bug for debugging
+        Employee<T> employeeToUpdate = employees.values().stream().findFirst().orElse(null);
 
         updateEmployeeField(employeeToUpdate, field, newValue);
 
