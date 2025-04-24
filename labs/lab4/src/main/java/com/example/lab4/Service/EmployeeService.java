@@ -30,7 +30,7 @@ public class EmployeeService {
         employeeDatabase.addEmployee(employee);
     }
 
-    public void removeEmployee(Employee<UUID> employee) {
+    public void removeEmployee(Employee<UUID> employee) throws EmployeeNotFoundException {
         employees.remove(employee);
         employeeDatabase.removeEmployee(employee.getEmployeeId());
     }
