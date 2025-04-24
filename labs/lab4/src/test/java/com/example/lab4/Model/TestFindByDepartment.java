@@ -1,6 +1,7 @@
 package com.example.lab4.Model;
 
 import com.example.lab4.Exceptions.EmployeeNotFoundException;
+import com.example.lab4.Exceptions.InvalidDepartmentException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,15 +34,14 @@ public class TestFindByDepartment {
     }
 
     @Test
-    public void testFindByDepartment () {
+    public void testFindByDepartment () throws InvalidDepartmentException {
         List<Employee<UUID>> engineeringEmployees = database.findByDepartment("ENGINEERING");
 
         assertEquals(2, engineeringEmployees.size());
         assertTrue(engineeringEmployees.stream().anyMatch(e -> e.getEmployeeId().equals(id1)));
         assertTrue(engineeringEmployees.stream().anyMatch(e -> e.getEmployeeId().equals(id3)));
         assertNotNull(engineeringEmployees.getFirst());
-
-        List<Employee<UUID>> marketingEmployees = database.findByDepartment("Marketing");
-        assertTrue(marketingEmployees.isEmpty());
+        
+        assertThrows(InvalidDepartmentException.class, () -> database.findByDepartment("MARKETING"));
     }
 }
