@@ -1,5 +1,7 @@
 package com.example.lab4.Model;
 
+import com.example.lab4.Exceptions.InvalidSalaryException;
+
 import java.util.UUID;
 
 public class Employee<T> implements Comparable<Employee<T>> {
@@ -60,7 +62,10 @@ public class Employee<T> implements Comparable<Employee<T>> {
         this.department = department;
     }
 
-    public void setSalary(double salary){
+    public void setSalary(double salary) throws InvalidSalaryException {
+        if (salary < 0) {
+            throw new InvalidSalaryException();
+        }
         this.salary = salary;
     }
 

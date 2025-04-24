@@ -2,6 +2,7 @@ package com.example.lab4.Service;
 
 import com.example.lab4.Exceptions.EmployeeNotFoundException;
 import com.example.lab4.Exceptions.InvalidDepartmentException;
+import com.example.lab4.Exceptions.InvalidSalaryException;
 import com.example.lab4.Model.Employee;
 import com.example.lab4.Model.EmployeeDatabase;
 import javafx.collections.FXCollections;
@@ -34,7 +35,7 @@ public class EmployeeService {
         employeeDatabase.removeEmployee(employee.getEmployeeId());
     }
 
-    public void updateEmployee(Employee<UUID> updatedEmployee) throws EmployeeNotFoundException {
+    public void updateEmployee(Employee<UUID> updatedEmployee) throws EmployeeNotFoundException, InvalidSalaryException {
         if (updatedEmployee == null) {
             throw new IllegalArgumentException("Updated employee cannot be null");
         }

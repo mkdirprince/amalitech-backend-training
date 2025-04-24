@@ -2,6 +2,7 @@ package com.example.lab4.Model;
 
 import com.example.lab4.Exceptions.EmployeeNotFoundException;
 import com.example.lab4.Exceptions.InvalidDepartmentException;
+import com.example.lab4.Exceptions.InvalidSalaryException;
 import com.example.lab4.Utils.EmployeeSalaryComparator;
 import com.example.lab4.Utils.EmployeeOutputUtil;
 
@@ -35,11 +36,17 @@ public class EmployeeDatabase<T> {
     }
 
     // helper function to update employee details
-    public void updateEmployeeField( Employee<T> employeeToUpdate, String field, Object value) {
+    public void updateEmployeeField( Employee<T> employeeToUpdate, String field, Object value) throws InvalidSalaryException {
         switch (field) {
             case "name" -> employeeToUpdate.setName((String) value);
             case "department" -> employeeToUpdate.setDepartment((String) value);
-            case "salary" -> employeeToUpdate.setSalary((double) value);
+            case "salary" -> {
+                double newSalary = (double) value;
+                if (newSalary < 0) {
+                    throw new InvalidSalaryException("Cannot update salary to a negative value: " + newSalary);
+                }
+                employeeToUpdate.setSalary(newSalary);
+            }
             case "performanceRating" -> employeeToUpdate.setPerformanceRating((double) value);
             case "yearsOfExperience" -> employeeToUpdate.setYearsOfExperience((int) value);
             case "isActive" -> employeeToUpdate.setIsActive((boolean) value);
@@ -47,7 +54,7 @@ public class EmployeeDatabase<T> {
         }
     }
 
-    public Employee<T> updateEmployeeDetails(T employeeId, String field, Object newValue) throws EmployeeNotFoundException {
+    public Employee<T> updateEmployeeDetails(T employeeId, String field, Object newValue) throws EmployeeNotFoundException, InvalidSalaryException {
         if (!employees.containsKey(employeeId)) {
             throw new EmployeeNotFoundException("Employee with ID " + employeeId + " not found.");
         }
@@ -91,9 +98,15 @@ public class EmployeeDatabase<T> {
     public void applyPerformanceRaise(double rating, double percentageRaise){
         employees.values().stream()
                 .filter(employee -> employee.getPerformanceRating() >= rating)
-                .forEach(employee -> employee.setSalary(
-                        Math.round(employee.getSalary() * (1 + (percentageRaise / PERCENT_DENOMINATOR))
-                        )));
+                .forEach(employee -> {
+                    try {
+                        employee.setSalary(
+                                Math.round(employee.getSalary() * (1 + (percentageRaise / PERCENT_DENOMINATOR))
+                                ));
+                    } catch (InvalidSalaryException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 
 
