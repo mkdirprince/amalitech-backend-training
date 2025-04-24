@@ -267,7 +267,7 @@ public class EmployeeController {
                 );
                 validationLabel.setText("");
                 actionButton.setDisable(false);
-            } catch (IllegalArgumentException | InvalidDepartmentException e) {
+            } catch (IllegalArgumentException | InvalidDepartmentException | InvalidSalaryException e) {
                 validationLabel.setText("Error: " + e.getMessage());
                 actionButton.setDisable(true);
                 logger.warning("Validation failed: " + e.getMessage());
@@ -302,7 +302,7 @@ public class EmployeeController {
                             Integer.parseInt(experienceField.getText()),
                             activeCheckBox.isSelected()
                     );
-                } catch (IllegalArgumentException | InvalidDepartmentException e) {
+                } catch (IllegalArgumentException | InvalidDepartmentException  | InvalidSalaryException e) {
                     validationLabel.setText("Error: " + e.getMessage());
                     logger.warning("Validation failed: " + e.getMessage());
                     return null;
