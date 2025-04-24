@@ -170,7 +170,7 @@ public class EmployeeController {
         }
 
         sortedEmployees.comparatorProperty().unbind();
-        sortedEmployees.setComparator(comparator);
+        sortedEmployees.setComparator(Comparator.nullsLast(comparator));
     }
 
     private Dialog<Employee<UUID>> createEmployeeDialog(Employee<UUID> employee, String title, String action) {
